@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>AngularJS Plunker</title>
+    <script>
+    document.write('<base href="' + document.location + '" />');
+  </script>
+    <script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.3/angular.js" data-semver="1.4.3"></script>
+    <script data-require="angular-sanitize@*" data-semver="1.4.3" src="https://code.angularjs.org/1.4.3/angular-sanitize.js"></script>
+    <script data-require="jquery@2.1.4" data-semver="2.1.4" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="select.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="select.css" />
+    <link rel="stylesheet" href="style.css" />
+    
+    <script src="app.js"></script>
+  </head>
+
+  <body ng-controller="MainCtrl as main">
+    <div class="row col-md-5">
+    <h1>Place Order</h1>
+    <form name="form" novalidate>
+      <div class="form-group">
+        <label>Select table or add:</label>
+        <ui-select ng-model="main.order.table" reset-search-input="false" required="true" ng-maxlength="40">
+          <ui-select-match placeholder="Select table or add new one...">
+            <span>{{$select.selected.description || $select.search}}</span>
+            <a class="btn btn-xs btn-link pull-right" ng-click="main.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
+          </ui-select-match>
+          <ui-select-choices repeat="table in (main.tables | filter: { description: $select.search }) track by table.id" refresh="main.refreshResults($select)" refresh-delay="0">
+            <span>{{table.description}}</span>
+          </ui-select-choices>
+        </ui-select>
+        <label>Select drink or add:</label>
+        <ui-select ng-model="main.order.drink" reset-search-input="false" required="true" ng-maxlength="40">
+          <ui-select-match placeholder="Select drink or add new one...">
+            <span>{{$select.selected.description || $select.search}}</span>
+            <a class="btn btn-xs btn-link pull-right" ng-click="main.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
+          </ui-select-match>
+          <ui-select-choices repeat="drink in (main.drinksList | filter: { description: $select.search }) track by drink.id" refresh="main.refreshResults($select)" refresh-delay="0">
+            <span>{{drink.description}}</span>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+      <button class="btn btn-primary">Submit</button>
+    </form>
+    <br/>
+    <pre>{{main.order|json}}</pre>
+    </div>
+  </body>
+
+</html>
